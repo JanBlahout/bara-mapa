@@ -1,6 +1,7 @@
 /* App.css */
 .app-container {
   display: flex;
+  height: 100vh; /* Ensure the container takes the full height */
 }
 
 .sidebar {
@@ -26,6 +27,6 @@
 }
 
 .map-container {
-  flex: 1;
-  height: 100vh;
+  flex: 1; /* Take up remaining space */
+  height: 100%;
 }

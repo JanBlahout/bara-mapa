@@ -1,0 +1,22 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+#root {
+  height: 100vh;
+}
+
+/*  */
+.leaflet-container {
+  height: 100vh;
+}
+
+.cluster-icon {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+  background-color: #fff;
+  transform: translate(-50%, -50%);
+}

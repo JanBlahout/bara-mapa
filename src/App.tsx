@@ -8,7 +8,6 @@ import './App.css';
 import AddMarker from './AddMarker';
 import SearchControl from './SearchControl';
 
-import Auth from './Auth';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './config/firebase';
 import { db } from './config/firebase';
@@ -19,7 +18,7 @@ import {
   doc,
   updateDoc,
 } from 'firebase/firestore';
-import { Button } from './components/ui/button';
+import RestaurantCard from './RestaurantCard';
 
 export type MarkerType = {
   geocode: [number, number];
@@ -110,24 +109,15 @@ function App() {
   return (
     <div className="app-container">
       <div className="sidebar">
-        <ul>
-          {markers.map((marker, index) => (
-            <li key={index} onClick={() => handleSidebarClick(marker.geocode)}>
-              <h2>{marker.popUp}</h2>
-              <h3>ID: {marker.id}</h3>
-              <p>Coordinates: {marker.geocode.join(', ')}</p>
-              {loggedIn && (
-                <Button
-                  onClick={() => {
-                    deleteRestaurant(marker.id);
-                  }}
-                >
-                  Delete
-                </Button>
-              )}
-            </li>
-          ))}
-        </ul>
+        {markers.map((marker) => (
+          <RestaurantCard
+            geocode={marker.geocode}
+            popUp={marker.popUp}
+            id={marker.id}
+            handleSidebarClick={() => handleSidebarClick(marker.geocode)}
+            key={marker.id}
+          />
+        ))}
       </div>
       <div className="map-container">
         <MapContainer center={view.center} zoom={view.zoom}>

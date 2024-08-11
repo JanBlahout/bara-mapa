@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { auth } from './config/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  signInWithEmailAndPassword,
+  signOut as signOutFromApp,
+} from 'firebase/auth';
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -9,6 +12,14 @@ const Auth = () => {
     if (!email || !password) return;
     try {
       await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      await signOutFromApp(auth);
     } catch (error) {
       console.log(error);
     }
@@ -26,6 +37,7 @@ const Auth = () => {
       ></input>
       <button onClick={signIn}>Sign in</button>
       <h3>{auth.currentUser?.email}</h3>
+      <button onClick={signOut}>Sign out</button>
     </div>
   );
 };

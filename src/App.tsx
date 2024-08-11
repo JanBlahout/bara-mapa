@@ -12,6 +12,8 @@ import { initialMarkers } from './data';
 import Auth from './Auth';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './config/firebase';
+import { db } from './config/firebase';
+import { getDocs, collection } from 'firebase/firestore';
 
 type MarkerType = {
   geocode: [number, number];
@@ -42,6 +44,29 @@ function App() {
     center: [48.8566, 2.3522],
     zoom: 13,
   });
+
+  const markersCollectionRef = collection(db, 'podniky');
+
+  useEffect(() => {
+    const getMarkers = async () => {
+      try {
+        const response = await getDocs(markersCollectionRef);
+        const data = response.docs.map((doc) => {
+          const docData = doc.data();
+          return {
+            geocode: docData.lokace as [number, number], // Ensure the type matches
+            popUp: docData.nazev as string, // Ensure the type matches
+          } as MarkerType;
+        });
+        console.log(data);
+        setMarkers([...initialMarkers, ...data]);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getMarkers();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {

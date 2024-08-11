@@ -8,21 +8,17 @@ type MarkerType = {
 
 interface AddMarkerProps {
   setMarkers: Dispatch<SetStateAction<MarkerType[]>>;
-  loggedIn: boolean;
 }
 
-function AddMarker({ setMarkers, loggedIn }: AddMarkerProps) {
+function AddMarker({ setMarkers }: AddMarkerProps) {
   useMapEvents({
     click(e) {
-      if (!loggedIn) {
-        // alert('You must be logged in to add a marker.');
-        return;
-      }
       const { lat, lng } = e.latlng;
       const newPopUpText = prompt('Enter popup text:');
+      if (!newPopUpText) return;
       setMarkers((current) => [
         ...current,
-        { geocode: [lat, lng], popUp: newPopUpText || 'No popup text' },
+        { geocode: [lat, lng], popUp: newPopUpText },
       ]);
     },
   });

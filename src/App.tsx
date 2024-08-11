@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
@@ -9,6 +9,9 @@ import AddMarker from './AddMarker';
 import SearchControl from './SearchControl';
 
 import { initialMarkers } from './data';
+import Auth from './Auth';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './config/firebase';
 
 type MarkerType = {
   geocode: [number, number];
@@ -40,12 +43,22 @@ function App() {
     zoom: 13,
   });
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setLoggedIn(!!user);
+    });
+
+    return () => unsubscribe();
+  }, []);
+  const [loggedIn, setLoggedIn] = useState(false);
+
   const handleSidebarClick = (geocode: [number, number]) => {
     setView({ center: geocode, zoom: 15 }); // Adjust zoom level as needed
   };
 
   return (
     <div className="app-container">
+      <Auth />
       <div className="sidebar">
         <ul>
           {markers.map((marker, index) => (
@@ -67,7 +80,7 @@ function App() {
             ))}
           </MarkerClusterGroup>
           <ChangeView center={view.center} zoom={view.zoom} />
-          <AddMarker setMarkers={setMarkers} loggedIn={false} />
+          {loggedIn && <AddMarker setMarkers={setMarkers} />}
           <SearchControl />
         </MapContainer>
       </div>

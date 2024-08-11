@@ -108,7 +108,6 @@ function App() {
 
   return (
     <div className="app-container">
-      <Auth />
       <div className="sidebar">
         <ul>
           {markers.map((marker, index) => (

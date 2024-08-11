@@ -31,7 +31,7 @@ const deleteRestaurant = async (id: string) => {
 function MapPopup(props: MapPopupProps) {
   const { item, loggedIn } = props;
   return (
-    <div>
+    <div className="flex flex-col gap-3">
       <h1>{item.popUp}</h1>
       <span>Adresa</span>
 

@@ -4,6 +4,7 @@ import App from './App.tsx';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Auth from './Auth.tsx';
+import NewMarkerPage from './NewMarkerPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: '/secretLogin',
     element: <Auth />,
+  },
+  {
+    path: '/newMarker/:lat/:lng',
+    element: <NewMarkerPage />,
   },
 ]);
 

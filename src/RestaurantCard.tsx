@@ -13,7 +13,6 @@ type RestaurantCardProps = MarkerType & {
 
 function RestaurantCard({
   geocode,
-  id,
   popUp,
   handleSidebarClick,
 }: RestaurantCardProps) {

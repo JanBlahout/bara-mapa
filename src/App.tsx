@@ -19,6 +19,7 @@ import {
   doc,
   updateDoc,
 } from 'firebase/firestore';
+import { Button } from './components/ui/button';
 
 export type MarkerType = {
   geocode: [number, number];
@@ -116,13 +117,13 @@ function App() {
               <h3>ID: {marker.id}</h3>
               <p>Coordinates: {marker.geocode.join(', ')}</p>
               {loggedIn && (
-                <button
+                <Button
                   onClick={() => {
                     deleteRestaurant(marker.id);
                   }}
                 >
                   Delete
-                </button>
+                </Button>
               )}
             </li>
           ))}

@@ -1,12 +1,7 @@
-import { Dispatch, SetStateAction } from 'react';
 import { useMapEvents } from 'react-leaflet';
 import { addDoc, collection } from 'firebase/firestore';
 import { auth, db } from './config/firebase';
-import { MarkerType } from './App';
 
-interface AddMarkerProps {
-  setMarkers: Dispatch<SetStateAction<MarkerType[]>>;
-}
 const markersCollectionRef = collection(db, 'podniky');
 const addNewmarker = async (
   nazev: string,
@@ -25,11 +20,12 @@ const addNewmarker = async (
   }
 };
 
-function AddMarker({ setMarkers }: AddMarkerProps) {
+function AddMarker() {
   useMapEvents({
     click(e) {
       const { lat, lng } = e.latlng;
       const nazev = prompt('Nazev:');
+      if (!nazev) return;
       const popis = prompt('Popis');
       if (!nazev || !popis) return;
       try {
@@ -37,10 +33,6 @@ function AddMarker({ setMarkers }: AddMarkerProps) {
       } catch (error) {
         console.log('error creating new point', error);
       }
-      // setMarkers((current) => [
-      //   ...current,
-      //   { geocode: [lat, lng], popUp: nazev },
-      // ]);
     },
   });
 

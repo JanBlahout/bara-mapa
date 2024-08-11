@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
@@ -8,16 +8,22 @@ import './App.css';
 import AddMarker from './AddMarker';
 import SearchControl from './SearchControl';
 
-import { initialMarkers } from './data';
 import Auth from './Auth';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './config/firebase';
 import { db } from './config/firebase';
-import { getDocs, collection } from 'firebase/firestore';
+import {
+  getDocs,
+  collection,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from 'firebase/firestore';
 
-type MarkerType = {
+export type MarkerType = {
   geocode: [number, number];
   popUp: string;
+  id: string;
 };
 
 const customIcon = new Icon({
@@ -39,34 +45,32 @@ function ChangeView({
 }
 
 function App() {
-  const [markers, setMarkers] = useState<MarkerType[]>(initialMarkers);
+  const [markers, setMarkers] = useState<MarkerType[]>([]);
   const [view, setView] = useState<{ center: [number, number]; zoom: number }>({
     center: [48.8566, 2.3522],
     zoom: 13,
   });
 
-  const markersCollectionRef = collection(db, 'podniky');
-
+  const markersCollectionRef = useMemo(() => collection(db, 'podniky'), []);
+  const getMarkers = async () => {
+    try {
+      const response = await getDocs(markersCollectionRef);
+      const data = response.docs.map((doc) => {
+        const docData = doc.data();
+        return {
+          geocode: docData.lokace as [number, number], // Ensure the type matches
+          popUp: docData.nazev as string, // Ensure the type matches
+          id: doc.id,
+        } as MarkerType;
+      });
+      setMarkers(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    const getMarkers = async () => {
-      try {
-        const response = await getDocs(markersCollectionRef);
-        const data = response.docs.map((doc) => {
-          const docData = doc.data();
-          return {
-            geocode: docData.lokace as [number, number], // Ensure the type matches
-            popUp: docData.nazev as string, // Ensure the type matches
-          } as MarkerType;
-        });
-        console.log(data);
-        setMarkers([...initialMarkers, ...data]);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     getMarkers();
-  }, []);
+  }, [markersCollectionRef]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -81,6 +85,27 @@ function App() {
     setView({ center: geocode, zoom: 15 }); // Adjust zoom level as needed
   };
 
+  const deleteRestaurant = async (id: string) => {
+    const podnik = doc(db, 'podniky', id);
+    try {
+      await deleteDoc(podnik);
+      getMarkers();
+    } catch (error) {
+      console.log('error deleting', error);
+    }
+  };
+
+  const updateRestaurant = async (id: string) => {
+    const podnik = doc(db, 'podniky', id);
+    try {
+      const novyNazev = prompt('Novy nazev:');
+      await updateDoc(podnik, { nazev: novyNazev });
+      getMarkers();
+    } catch (error) {
+      console.log('error deleting', error);
+    }
+  };
+
   return (
     <div className="app-container">
       <Auth />
@@ -89,7 +114,17 @@ function App() {
           {markers.map((marker, index) => (
             <li key={index} onClick={() => handleSidebarClick(marker.geocode)}>
               <h2>{marker.popUp}</h2>
+              <h3>ID: {marker.id}</h3>
               <p>Coordinates: {marker.geocode.join(', ')}</p>
+              {loggedIn && (
+                <button
+                  onClick={() => {
+                    deleteRestaurant(marker.id);
+                  }}
+                >
+                  Delete
+                </button>
+              )}
             </li>
           ))}
         </ul>
@@ -100,7 +135,27 @@ function App() {
           <MarkerClusterGroup chunkedLoading>
             {markers.map((marker, index) => (
               <Marker key={index} position={marker.geocode} icon={customIcon}>
-                <Popup>{marker.popUp}</Popup>
+                <Popup>
+                  {marker.popUp}
+                  {loggedIn && (
+                    <button
+                      onClick={() => {
+                        deleteRestaurant(marker.id);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  )}
+                  {loggedIn && (
+                    <button
+                      onClick={() => {
+                        updateRestaurant(marker.id);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  )}
+                </Popup>
               </Marker>
             ))}
           </MarkerClusterGroup>

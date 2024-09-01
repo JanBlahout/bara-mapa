@@ -5,6 +5,13 @@ import { useState } from 'react';
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
 import { Textarea } from './components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './components/ui/select';
 
 const markersCollectionRef = collection(db, 'podniky');
 
@@ -29,6 +36,15 @@ const addNewMarker = async (
   }
 };
 
+const cousineTypes = [
+  'Kavárna',
+  'Asie',
+  'Burgrárna',
+  'Mexická',
+  'Čajovna',
+  'Cukrárna',
+  'Bistro',
+];
 function NewMarkerPage() {
   const { lat, lng } = useParams<{ lat: string; lng: string }>();
   const [nazev, setNazev] = useState('');
@@ -79,6 +95,21 @@ function NewMarkerPage() {
           />
         </div>
         <div>
+          <label>Podnik</label>
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Vyber ze seznamu" />
+            </SelectTrigger>
+            <SelectContent>
+              {cousineTypes.map((cousine) => (
+                <SelectItem value={cousine} key={cousine}>
+                  {cousine}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
           <label htmlFor="popis">Google odkaz:</label>
           <Input
             id="google"
@@ -98,15 +129,16 @@ function NewMarkerPage() {
             onChange={(e) => setIntagramLink(e.target.value)}
           />
         </div>
-
-        <Button
-          onClick={() => {
-            navigate('/');
-          }}
-        >
-          Zpět
-        </Button>
-        <Button type="submit">Přidat</Button>
+        <div className="flex gap-6 justify-center my-4">
+          <Button
+            onClick={() => {
+              navigate('/');
+            }}
+          >
+            Zpět
+          </Button>
+          <Button type="submit">Přidat</Button>
+        </div>
       </form>
     </div>
   );

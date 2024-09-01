@@ -41,8 +41,10 @@ function MapPopup(props: MapPopupProps) {
         target="_blank"
         rel="noopener noreferrer"
       >
-        Navigovat
+        Google odkaz
       </a>
+
+      <a href="#">Instagram</a>
 
       {loggedIn && (
         <Button

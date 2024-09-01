@@ -4,6 +4,8 @@ import {
   signInWithEmailAndPassword,
   signOut as signOutFromApp,
 } from 'firebase/auth';
+import { Button } from './components/ui/button';
+import { Input } from './components/ui/input';
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,19 +27,31 @@ const Auth = () => {
     }
   };
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-      <span>Auth component, remove this later or put it on different page</span>
-      <input
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '15px',
+        maxWidth: '400px',
+        margin: '2rem auto',
+      }}
+    >
+      <Input
         placeholder="Email"
         onChange={(e) => setEmail(e.target.value)}
-      ></input>
-      <input
+      ></Input>
+      <Input
         placeholder="Password"
         onChange={(e) => setPassword(e.target.value)}
-      ></input>
-      <button onClick={signIn}>Sign in</button>
-      <h3>{auth.currentUser?.email}</h3>
-      <button onClick={signOut}>Sign out</button>
+      ></Input>
+      {auth.currentUser?.email ? (
+        <div>
+          <h3>{auth.currentUser?.email}</h3>
+          <Button onClick={signOut}>Sign out</Button>
+        </div>
+      ) : (
+        <Button onClick={signIn}>Sign in</Button>
+      )}
     </div>
   );
 };

@@ -40,6 +40,8 @@ function ChangeView({
 }
 
 function App() {
+  const [isListOpen, setIsListOpen] = useState(false); // State to control the full-screen list
+
   const [markers, setMarkers] = useState<MarkerType[]>([]);
   const [view, setView] = useState<{ center: [number, number]; zoom: number }>({
     center: [50.08710669808234, 14.421359586553326],
@@ -78,6 +80,11 @@ function App() {
 
   const handleSidebarClick = (geocode: [number, number]) => {
     setView({ center: geocode, zoom: 20 });
+    setIsListOpen(false); // Close the full-screen list
+  };
+
+  const toggleList = () => {
+    setIsListOpen(!isListOpen); // Toggle full-screen list
   };
 
   return (
@@ -109,6 +116,27 @@ function App() {
           {loggedIn && <AddMarker />}
           <SearchControl />
         </MapContainer>
+      </div>
+      <div className="floating-buttons">
+        <button className="filter-button">Mexican</button>
+        <button className="filter-button">Sushi</button>
+        <button className="filter-button">Coffee</button>
+      </div>
+      {/* Arrow button to toggle full-screen list */}
+      <button className="arrow-button" onClick={toggleList}>
+        ⬆️
+      </button>
+      {/* Full-screen list */}
+      <div className={`fullscreen-list ${isListOpen ? 'active' : ''}`}>
+        {markers.map((marker) => (
+          <RestaurantCard
+            geocode={marker.geocode}
+            popUp={marker.popUp}
+            id={marker.id}
+            handleSidebarClick={() => handleSidebarClick(marker.geocode)}
+            key={marker.id}
+          />
+        ))}
       </div>
     </div>
   );

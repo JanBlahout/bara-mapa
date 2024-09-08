@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Icon } from 'leaflet';
+// import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
@@ -16,6 +16,7 @@ import RestaurantCard from './RestaurantCard';
 import MapPopup from './MapPopup';
 import { Button } from './components/ui/button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { Input } from './components/ui/input';
 
 export type MarkerType = {
   geocode: [number, number];
@@ -23,11 +24,11 @@ export type MarkerType = {
   id: string;
 };
 
-const customIcon = new Icon({
-  iconUrl:
-    'https://as2.ftcdn.net/v2/jpg/01/34/46/07/1000_F_134460749_hZOa8D3NVvPDlJx7RV8nFoLXT0JDNpTu.jpg',
-  iconSize: [38, 38],
-});
+// const customIcon = new Icon({
+//   iconUrl:
+//     'https://as2.ftcdn.net/v2/jpg/01/34/46/07/1000_F_134460749_hZOa8D3NVvPDlJx7RV8nFoLXT0JDNpTu.jpg',
+//   iconSize: [38, 38],
+// });
 
 function ChangeView({
   center,
@@ -42,7 +43,8 @@ function ChangeView({
 }
 
 function App() {
-  const [isListOpen, setIsListOpen] = useState(false); // State to control the full-screen list
+  const [isListOpen, setIsListOpen] = useState(false);
+  const [filter, setFilter] = useState('');
 
   const [markers, setMarkers] = useState<MarkerType[]>([]);
   const [view, setView] = useState<{ center: [number, number]; zoom: number }>({
@@ -89,10 +91,19 @@ function App() {
     setIsListOpen(!isListOpen); // Toggle full-screen list
   };
 
+  const filteredMarkers = markers.filter((marker) => {
+    const filterText = filter.toLowerCase(); // Convert filter text to lowercase for case-insensitive search
+    return marker.popUp.toLowerCase().includes(filterText);
+  });
+
   return (
     <div className="app-container">
       <div className="sidebar">
-        {markers.map((marker) => (
+        <Input
+          placeholder="Hledat"
+          onChange={(e) => setFilter(e.target.value)}
+        ></Input>
+        {filteredMarkers.map((marker) => (
           <RestaurantCard
             geocode={marker.geocode}
             popUp={marker.popUp}

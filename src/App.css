@@ -13,7 +13,7 @@
 
 @media only screen and (max-width: 768px) {
   .sidebar {
-    display: none; /* Hidden on small screens */
+    display: none;
   }
 }
 
@@ -22,27 +22,6 @@
   height: 100%;
 }
 
-/* Floating buttons hidden by default */
-.floating-buttons {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: none; /* Hidden on larger screens */
-  gap: 10px;
-  z-index: 401;
-}
-
-.filter-button {
-  background-color: #28a745;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-/* Arrow button styling */
 .mobile-menu {
   position: fixed;
   bottom: 70px;
@@ -54,7 +33,6 @@
   height: 60px !important;
 }
 
-/* Full-screen list (hidden by default) */
 .fullscreen-list {
   display: flex;
   flex-direction: column;
@@ -71,15 +49,13 @@
   z-index: 401;
 }
 
-/* Show the full-screen list when active */
 .fullscreen-list.active {
   bottom: 0;
 }
 
-/* Show floating buttons on screens smaller than 768px */
 @media only screen and (max-width: 768px) {
   .floating-buttons {
-    display: flex; /* Show on smaller screens */
+    display: flex;
   }
   .mobile-menu {
     display: block !important;

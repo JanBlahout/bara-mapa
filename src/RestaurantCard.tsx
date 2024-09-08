@@ -1,31 +1,23 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MarkerType } from './App';
 
-type RestaurantCardProps = MarkerType & {
+type RestaurantCardProps = {
   handleSidebarClick: (geocode: [number, number]) => void;
+  marker: MarkerType;
 };
 
-function RestaurantCard({
-  geocode,
-  popUp,
-  handleSidebarClick,
-}: RestaurantCardProps) {
+function RestaurantCard({ marker, handleSidebarClick }: RestaurantCardProps) {
   return (
     <Card
-      onClick={() => handleSidebarClick([geocode[0], geocode[1]])}
+      onClick={() => handleSidebarClick([marker.lokace[0], marker.lokace[1]])}
       className="hover:bg-slate-200 cursor-pointer"
     >
       <CardHeader>
-        <CardTitle>{popUp}</CardTitle>
-        <CardDescription>Adresa</CardDescription>
+        <CardTitle>{marker.nazev}</CardTitle>
       </CardHeader>
-      <CardContent>Ikona restaurace</CardContent>
+      <CardContent>
+        <p>{marker.popis}</p>
+      </CardContent>
     </Card>
   );
 }

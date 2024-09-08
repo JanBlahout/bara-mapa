@@ -32,19 +32,19 @@ function MapPopup(props: MapPopupProps) {
   const { item, loggedIn } = props;
   return (
     <div className="flex flex-col gap-3">
-      <h1>{item.popUp}</h1>
-      <span>Adresa</span>
+      <h1>{item.nazev}</h1>
+      <span>{item.popis}</span>
 
-      <a
-        // href={`https://www.google.com/maps?q=${item.geocode[0]},${item.geocode[1]}`}
-        href={`https://www.google.com/maps/place/Pra%C5%BEsk%C3%BD+orloj/@50.0870416,14.4204803,503m/data=!3m1!1e3!4m12!1m5!3m4!2zNTDCsDA1JzEzLjYiTiAxNMKwMjUnMTYuOSJF!8m2!3d50.0871067!4d14.4213596!3m5!1s0x470b94e939c02f49:0xf17b44b25aa20696!8m2!3d50.0870215!4d14.4207065!16zL20vMDMydDBm?entry=ttu`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Google odkaz
-      </a>
-
-      <a href="#">Instagram</a>
+      {item.googleLink && (
+        <a href={item.googleLink} target="_blank" rel="noopener noreferrer">
+          Google odkaz
+        </a>
+      )}
+      {item.instagramLink && (
+        <a href={item.instagramLink} target="_blank" rel="noopener noreferrer">
+          Moje návštěva
+        </a>
+      )}
 
       {loggedIn && (
         <Button

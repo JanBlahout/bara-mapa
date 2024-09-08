@@ -12,16 +12,20 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './config/firebase';
 import { db } from './config/firebase';
 import { getDocs, collection } from 'firebase/firestore';
-import RestaurantCard from './RestaurantCard';
 import MapPopup from './MapPopup';
 import { Button } from './components/ui/button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { Input } from './components/ui/input';
+import RestaurantList from './RestaurantList';
 
 export type MarkerType = {
-  geocode: [number, number];
-  popUp: string;
+  // geocode: [number, number];
+  // popUp: string;
   id: string;
+  nazev: string;
+  popis: string;
+  lokace: [number, number];
+  googleLink?: string;
+  instagramLink?: string;
 };
 
 // const customIcon = new Icon({
@@ -60,8 +64,11 @@ function App() {
       const data = response.docs.map((doc) => {
         const docData = doc.data();
         return {
-          geocode: docData.lokace as [number, number], // Ensure the type matches
-          popUp: docData.nazev as string, // Ensure the type matches
+          lokace: docData.lokace,
+          nazev: docData.nazev,
+          popis: docData.popis,
+          instagramLink: docData.instagramLink,
+          googleLink: docData.googleLink,
           id: doc.id,
         } as MarkerType;
       });
@@ -84,41 +91,39 @@ function App() {
 
   const handleSidebarClick = (geocode: [number, number]) => {
     setView({ center: geocode, zoom: 20 });
-    setIsListOpen(false); // Close the full-screen list
+    setIsListOpen(false);
   };
 
   const toggleList = () => {
-    setIsListOpen(!isListOpen); // Toggle full-screen list
+    setIsListOpen(!isListOpen);
   };
 
   const filteredMarkers = markers.filter((marker) => {
-    const filterText = filter.toLowerCase(); // Convert filter text to lowercase for case-insensitive search
-    return marker.popUp.toLowerCase().includes(filterText);
+    const filterText = filter.toLowerCase();
+    return (
+      marker.nazev.toLowerCase().includes(filterText) ||
+      marker.popis.toLowerCase().includes(filterText)
+    );
   });
+
+  console.log(filteredMarkers);
 
   return (
     <div className="app-container">
       <div className="sidebar">
-        <Input
-          placeholder="Hledat"
-          onChange={(e) => setFilter(e.target.value)}
-        ></Input>
-        {filteredMarkers.map((marker) => (
-          <RestaurantCard
-            geocode={marker.geocode}
-            popUp={marker.popUp}
-            id={marker.id}
-            handleSidebarClick={() => handleSidebarClick(marker.geocode)}
-            key={marker.id}
-          />
-        ))}
+        <RestaurantList
+          filter={filter}
+          setFilter={setFilter}
+          filteredMarkers={filteredMarkers}
+          handleClick={handleSidebarClick}
+        />
       </div>
       <div className="map-container">
         <MapContainer center={view.center} zoom={view.zoom}>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           <MarkerClusterGroup chunkedLoading>
             {markers.map((marker, index) => (
-              <Marker key={index} position={marker.geocode}>
+              <Marker key={index} position={marker.lokace}>
                 <Popup>
                   <MapPopup loggedIn={loggedIn} item={marker} />
                 </Popup>
@@ -131,25 +136,21 @@ function App() {
         </MapContainer>
       </div>
 
+      <div className={`fullscreen-list ${isListOpen ? 'active' : ''}`}>
+        <RestaurantList
+          filter={filter}
+          setFilter={setFilter}
+          filteredMarkers={filteredMarkers}
+          handleClick={handleSidebarClick}
+        />
+      </div>
       <Button className="mobile-menu" onClick={toggleList}>
         {isListOpen ? (
-          <ChevronDown className="w-10 h-10" /> // Chevron down when list is open
+          <ChevronDown className="w-10 h-10" />
         ) : (
-          <ChevronUp className="w-10 h-10" /> // Chevron up when list is closed
+          <ChevronUp className="w-10 h-10" />
         )}
       </Button>
-      {/* Full-screen list */}
-      <div className={`fullscreen-list ${isListOpen ? 'active' : ''}`}>
-        {markers.map((marker) => (
-          <RestaurantCard
-            geocode={marker.geocode}
-            popUp={marker.popUp}
-            id={marker.id}
-            handleSidebarClick={() => handleSidebarClick(marker.geocode)}
-            key={marker.id}
-          />
-        ))}
-      </div>
     </div>
   );
 }

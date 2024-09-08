@@ -14,6 +14,8 @@ import { db } from './config/firebase';
 import { getDocs, collection } from 'firebase/firestore';
 import RestaurantCard from './RestaurantCard';
 import MapPopup from './MapPopup';
+import { Button } from './components/ui/button';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export type MarkerType = {
   geocode: [number, number];
@@ -117,15 +119,14 @@ function App() {
           <SearchControl />
         </MapContainer>
       </div>
-      <div className="floating-buttons">
-        <button className="filter-button">Mexican</button>
-        <button className="filter-button">Sushi</button>
-        <button className="filter-button">Coffee</button>
-      </div>
-      {/* Arrow button to toggle full-screen list */}
-      <button className="arrow-button" onClick={toggleList}>
-        ⬆️
-      </button>
+
+      <Button className="mobile-menu" onClick={toggleList}>
+        {isListOpen ? (
+          <ChevronDown className="w-10 h-10" /> // Chevron down when list is open
+        ) : (
+          <ChevronUp className="w-10 h-10" /> // Chevron up when list is closed
+        )}
+      </Button>
       {/* Full-screen list */}
       <div className={`fullscreen-list ${isListOpen ? 'active' : ''}`}>
         {markers.map((marker) => (

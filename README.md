@@ -1,30 +1,97 @@
-# React + TypeScript + Vite
+# Bara Mapa
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bara Mapa is a map-based application where users can create pins for restaurants and other establishments. Each pin allows users to add details like the name, description, location, Google link (for navigation and reviews), and an Instagram link to showcase their visit. The application is built with modern tools like React, TypeScript, and Firebase, and leverages Leaflet for the map interface.
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Tech Stack](#tech-stack)
+- [Features](#features)
+- [Installation](#installation)
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Frontend**: React, TypeScript, TailwindCSS, Shadcn
+- **Maps**: Leaflet, React Leaflet, React Leaflet Cluster
+- **Backend**: Firebase (Firestore, Authentication, Storage)
+- **Validation**: Zod (Planned)
+- **Build Tool**: Vite
+- **Linting**: ESLint, TypeScript ESLint
 
-- Configure the top-level `parserOptions` property like this:
+## Features
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+- Create map pins with custom information:
+  - Name
+  - Description
+  - Location
+  - Google link (for navigation and reviews)
+  - Instagram link (to showcase the visit)
+- Mobile-responsive design using TailwindCSS
+- Clustered map markers for better performance on larger datasets
+- Firebase integration for backend storage and authentication
+- (Planned) Editing and deleting markers
+- (Planned) Uploading images for each establishment
+- (Planned) Support for multiple establishment types (restaurant, coffee shop, bistro, etc.)
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your-username/bara-mapa.git
+cd bara-mapa
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+2. Install dependencies
+
+```bash
+npm install
+```
+
+3. Set up your environment variables by copying .env.example to .env and filling in the Firebase credentials:
+
+```bash
+cp .env.example .env
+```
+
+## Running the application
+
+```bash
+npm run dev
+```
+
+## Enviroment variables
+
+Create a .env file in the root directory of your project and add your Firebase credentials. These credentials can be obtained from your Firebase project settings.
+
+```bash
+API_KEY=<your-firebase-api-key>
+AUTH_DOMAIN=<your-firebase-auth-domain>
+PROJECT_ID=<your-firebase-project-id>
+STORAGE_BUCKET=<your-firebase-storage-bucket>
+MESSAGING_SENDER_ID=<your-firebase-messaging-sender-id>
+APP_ID=<your-firebase-app-id>
+MEASUREMENT_ID=<your-firebase-measurement-id>
+
+```
+
+## Roadmap / To do
+
+- [x] **Phase 1: Core Features**
+
+  - [x] Implement map with Leaflet and React Leaflet
+  - [x] Add the ability to create pins with details (name, description, location, etc.)
+  - [x] Implement Firebase for backend and storage
+  - [x] Make the map responsive for mobile
+
+- [ ] **Phase 2: Enhancements**
+
+  - [ ] Implement Zod for form validation
+  - [ ] Add edit and delete functionality for markers
+  - [ ] Allow users to upload images for each pin
+  - [ ] Categorize establishments (restaurant, coffee shop, bistro, etc.)
+
+- [ ] **Phase 3: Optimization & Refactoring**
+  - [ ] Optimize code for performance
+  - [ ] Refactor code for better readability and maintainability
+  - [ ] Improve user interface with advanced animations and transitions
+  - [ ] Implement additional security measures for Firebase

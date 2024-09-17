@@ -1,6 +1,6 @@
-# Bara Mapa
+# Favourite Restaurants Pins
 
-Bara Mapa is a map-based application where users can create pins for restaurants and other establishments. Each pin allows users to add details like the name, description, location, Google link (for navigation and reviews), and an Instagram link to showcase their visit. The application is built with modern tools like React, TypeScript, and Firebase, and leverages Leaflet for the map interface.
+Favourite Restaurants Pins is a map-based application where users can create pins for restaurants and other establishments. Each pin allows users to add details like the name, description, location, Google link (for navigation and reviews), and an Instagram link to showcase their visit. The application is built with modern tools like React, TypeScript, and Firebase, and leverages Leaflet for the map interface.
 
 ## Table of Contents
 

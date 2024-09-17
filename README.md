@@ -1,12 +1,22 @@
 # Favourite Restaurants Pins
 
-Favourite Restaurants Pins is a map-based application where users can create pins for restaurants and other establishments. Each pin allows users to add details like the name, description, location, Google link (for navigation and reviews), and an Instagram link to showcase their visit. The application is built with modern tools like React, TypeScript, and Firebase, and leverages Leaflet for the map interface.
+Favourite Restaurants Pins is a map-based application where users can create pins for restaurants and other establishments. Only signed-in user can create pins. Each pin allows users to add details like the name, description, location, Google link (for navigation and reviews), and an Instagram link to showcase their visit. The application is built with modern tools like React, TypeScript, and Firebase, and leverages Leaflet for the map interface.
 
 ## Table of Contents
 
-- [Tech Stack](#tech-stack)
-- [Features](#features)
-- [Installation](#installation)
+- [Favourite Restaurants Pins](#favourite-restaurants-pins)
+  - [Table of Contents](#table-of-contents)
+  - [Live Preview](#live-preview)
+  - [Tech Stack](#tech-stack)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Running the application](#running-the-application)
+  - [Enviroment variables](#enviroment-variables)
+  - [Roadmap / To do](#roadmap--to-do)
+
+## Live Preview
+
+https://my-favourite-restaurants.netlify.app/
 
 ## Tech Stack
 

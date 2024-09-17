@@ -95,5 +95,3 @@ MEASUREMENT_ID=<your-firebase-measurement-id>
   - [ ] Refactor code for better readability and maintainability
   - [ ] Improve user interface with advanced animations and transitions
   - [ ] Implement additional security measures for Firebase
-
-test
